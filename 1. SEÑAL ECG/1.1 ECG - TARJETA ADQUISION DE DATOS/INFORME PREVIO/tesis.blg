@@ -1,0 +1,14 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'tesis.blg'
+[72] biber:342> INFO - === sáb ene 31, 2026, 23:43:52
+[88] Biber.pm:421> INFO - Reading 'tesis.bcf'
+[171] Biber.pm:1002> INFO - Found 3 citekeys in bib section 0
+[189] Biber.pm:4487> INFO - Processing section 0
+[197] Biber.pm:4678> INFO - Looking for bibtex file 'biblio.bib' for section 0
+[198] bibtex.pm:1713> INFO - LaTeX decoding ...
+[203] bibtex.pm:1519> INFO - Found BibTeX data source 'biblio.bib'
+[234] Utils.pm:479> ERROR - BibTeX subsystem: /tmp/biber_tmp_yDBy/a9e03cb3043b9e2c02591da84105bb68_13100.utf8, line 35, syntax error: at end of input, expected one of: number, name (entry type, key, field, or macro name) or quoted string ({...} or "...")
+[234] Biber.pm:132> WARN - legacy year field '202x' in entry 'NIResolutionDAQ' is not an integer - this will probably not sort properly.
+[234] Biber.pm:132> WARN - legacy year field '202x' in entry 'ADLINKDAQ' is not an integer - this will probably not sort properly.
+[234] Biber.pm:134> INFO - WARNINGS: 2
+[234] Biber.pm:137> INFO - ERRORS: 1

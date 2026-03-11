@@ -1,0 +1,13 @@
+# ARCHIVOS LATEX
+*.acn
+*.aux
+*.bcf
+*.log
+*.nlo
+*.out
+*.xml
+*.synctex.gz
+*.xdy
+
+# MATLAB
+*.asv

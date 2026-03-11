@@ -1,0 +1,5 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'estiloBase.blg'
+[73] biber:342> INFO - === sáb ene 31, 2026, 23:42:01
+[95] Utils.pm:479> ERROR - Cannot find 'estiloBase.bcf'!
+[95] Biber.pm:137> INFO - ERRORS: 1

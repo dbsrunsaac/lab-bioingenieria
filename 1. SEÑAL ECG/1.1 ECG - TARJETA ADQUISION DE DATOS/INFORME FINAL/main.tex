@@ -1,0 +1,432 @@
+\UseRawInputEncoding
+\documentclass[a4paper,openany,12pt]{book}
+\input{contenido/includes.tex}
+\newcolumntype{L}{>{\centering\arraybackslash}m{4cm}} 
+\usepackage[caption=false]{subfig}
+\usepackage{dsfont}
+\usepackage{gantt}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{minted2}
+
+\newtheorem{defn}{Definition}[section]
+\pagenumbering{Roman}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%% list of content %%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents 
+\listoftables 
+\addcontentsline{toc}{chapter}{Lista de Tablas}
+\listoffigures 
+\addcontentsline{toc}{chapter}{Lista de Figuras}
+
+\setlength{\tabcolsep}{6pt} 
+\renewcommand{\arraystretch}{1}
+\clearpage
+\pagenumbering{arabic}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{contenido/desarrollo}
+
+
+\section{Describir el proceso de diseño del puente resistivo tomando en cuenta los valores reales
+	de las resistencias y el proceso de ajuste así para obtener la amplitud final de la señal ECG
+	generada.}
+
+El diseño del puente se realizo  para ajustar la amplitud de la señal ECG generada desde el DAC de 8 bits  hasta el valor  nominal  requerido de 0.5 mV. A  continuacion  se describe  el proceso  de diseño, los ajustes  realizados. Inicialmente se organizaron los datos  como  el voltaje del convertidor DAC. 
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|c|}
+		\hline
+		\textbf{Parámetro} & \textbf{Valor} \\ \hline
+		Voltaje de referencia DAC & 3.3 V \\ \hline
+		Resolución DAC & 8 bits (256 niveles) \\ \hline
+		Amplitud salida DAC (sin potenciómetro) & 3.3 V pico a pico \\ \hline
+		Amplitud con potenciómetro adicional & 540 mV pico a pico \\ \hline
+		Amplitud objetivo (pico R) & 0.5 mV \\ \hline
+	\end{tabular}
+\end{table}
+\subsection{Valores de Resistencias}
+
+Se emplearon resistencias comerciales de 1k$\Omega$, las cuales fueron medidas de manera individual con un multímetro digital para determinar sus valores reales.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Brazo} & \textbf{Componentes} & \textbf{Valor Medido}\\
+		\hline
+		R1 & \( 1 \times 1 \, \text{k}\Omega \) & \( 0.990 \, \text{k}\Omega \)  \\
+		\hline
+		R2 & \( 1 \times 1 \, \text{k}\Omega + (10 \, \Omega \parallel 10 \, \Omega) \) & \( 0.998 \, \text{k}\Omega \) \\
+		\hline
+		R3 & \( 1 \times 1 \, \text{k}\Omega \) & \( 0.990 \, \text{k}\Omega \)\\
+		\hline
+		R4 & \( 1 \times 1 \, \text{k}\Omega \) & \( 0.993 \, \text{k}\Omega \)\\
+		\hline
+	\end{tabular}
+	\caption{Valores medidos de las resistencias del puente}
+	\label{tab:resistencias}
+\end{table}
+\[
+R_{\text{paralelo}} = \frac{R_1 \times R_2}{R_1 + R_2} = \frac{10 \, \Omega \times 10 \, \Omega}{10 \, \Omega + 10 \, \Omega} = 5 \, \Omega
+\]
+
+\[
+R2 = 0.993 \, \text{k}\Omega + 0.005 \, \text{k}\Omega = 0.998 \, \text{k}\Omega = 998 \, \Omega
+\]
+\subsection{Fundamento Teórico del Puente de Wheatstone}
+
+El puente de Wheatstone es un circuito que permite crear diferencias de voltaje precisas. En este caso, se utiliza en configuración desbalanceada para generar una diferencia de potencial del orden de 0.5 mV a partir de una señal de entrada de 540 mV.
+
+El voltaje de salida del puente se calcula mediante:
+
+\[
+V_{\text{out}} = V_C - V_D
+\]
+
+donde \( V_C \) y \( V_D \) son los voltajes en de salida en los nodos C y D respectivamente:
+
+\[
+V_D= V_{\text{in}} \times \frac{R_2}{R_1 + R_2}
+\]
+
+\[
+V_C = V_{\text{in}} \times \frac{R_4}{R_3 + R_4}
+\]
+
+El puente está balanceado cuando \( V_B = V_C \) (\( V_{\text{out}} = 0 \)). Para generar una salida no nula, es necesario crear un desbalance intencional entre las dos ramas del puente.
+
+\subsection{Cálculos con Valores Medidos}
+
+Utilizando los valores de resistencias medidos con el multímetro y el voltaje de entrada de 540 mV , se procede a calcular el voltaje de salida del puente:
+
+\subsubsection{Cálculo de \( V_C \) (Rama Izquierda A-C-B)}
+
+\[
+V_C = V_{\text{in}} \times \frac{R_2}{R_1 + R_2}
+\]
+
+\[
+V_C = 540 \, \text{mV} \times \frac{998 \, \Omega}{990 \, \Omega + 998 \, \Omega}
+\]
+
+\[
+V_C = 540 \, \text{mV} \times \frac{998}{1988}
+\]
+
+\[
+V_C = 540 \, \text{mV} \times 0.502012
+\]
+
+\[
+V_C = 271.087 \, \text{mV}
+\]
+\subsubsection{Cálculo de \( V_D \) (Rama Derecha A-D-B)}
+
+\[
+V_D = V_{\text{in}} \times \frac{R_4}{R_3 + R_4}
+\]
+\[
+V_D = 540 \, \text{mV} \times \frac{993 \, \Omega}{990 \, \Omega + 993 \, \Omega}
+\]
+\[
+V_D = 540 \, \text{mV} \times \frac{993}{1983}
+\]
+\[
+V_D = 540 \, \text{mV} \times 0.500756
+\]
+\[
+V_D = 270.408 \, \text{mV}
+\]
+
+\subsubsection{Voltaje de Salida del Puente}
+
+\[
+V_{\text{out}} = V_C - V_D
+\]
+\[
+V_{\text{out}} = 271.087 \, \text{mV} - 270.408 \, \text{mV}
+\]
+\[
+V_{\text{out}} = 0.678 \, \text{mV}
+\]
+
+\subsubsection{Comparación con el Objetivo}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|c|}
+		\hline
+		\textbf{Parámetro} & \textbf{Valor} \\
+		\hline
+		Voltaje objetivo & 0.50 mV \\
+		\hline
+		Voltaje calculado del puente & 0.678 mV \\
+		\hline
+		Diferencia & +0.178 mV (+35.6\%) \\
+		\hline
+		
+	\end{tabular}
+	\caption{Comparación del voltaje de salida con el objetivo}
+	\label{tab:comparacion}
+\end{table}
+
+El puente genera 0.678 mV, que es 35.6\% mayor que el objetivo de 0.5 mV para alcanzar exactamente 0.5 mV. Esto se puede lograr con un divisor resistivo simple o ajustando el valor de R2.
+
+\subsection{Análisis del Desbalance del Puente}
+
+El factor de desbalance del puente se calcula como la diferencia relativa entre las dos ramas:
+
+\[
+\text{Desbalance} = \left| \frac{R_2}{R_1 + R_2} - \frac{R_4}{R_3 + R_4} \right|
+\]
+
+\[
+\text{Desbalance} = \left| 0.502012 - 0.500756 \right|
+\]
+
+\[
+\text{Desbalance} = 0.001256 \; (0.126\%)
+\]
+Este pequeño desbalance del 0.126\% es el que genera la diferencia de voltaje de 0.678 mV entre los nodos C y D del puente. Sin la adición de las resistencias de \(10 \, \Omega\) en paralelo en el brazo R2, el puente estaría prácticamente balanceado y la salida sería cercana a 0 mV.
+
+\textbf{Desbalance óptimo para 0.5 mV:} Para obtener exactamente 0.5 mV de salida, el desbalance requerido sería de \(0.000926\) (\(0.0926\%\)), lo que correspondería a un valor de \(R2 = 996.685 \, \Omega\). La diferencia con el valor actual de \(998 \, \Omega\) es de solo \(1.315 \, \Omega\).
+
+\section{Utilizando el monitor fisiológico del laboratorio, imprima la señal que genera su prototipo
+	simulador de ECG y demuestre que la amplitud de la señal que ha generado tiene una
+	amplitud nominal (desde la línea de base al punto R) de 2mV con una tolerancia de +/- 0.2
+	mV.G}
+
+A continuación, se muestra el registro impreso en papel milimetrado del monitor fisiológico, donde se observan varios complejos QRS correspondientes a la señal ECG generada por el prototipo.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/Impresa.jpeg}
+	\caption{Registro en papel milimetrado con complejos QRS del ECG generado por el prototipo.}
+	\label{fig:placeholder}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{media/monitor.png}
+	\caption{Señal ECG en el monitor de funciones vitales para una frecuencia de 60Hz}
+	\label{fig:placeholder}
+\end{figure}
+
+La escala de ganancia del monitor fisiológico está configurada a 10 mm/mV, lo que permite relacionar directamente las distancias medidas en el papel milimétrico con los voltajes de la señal ECG. Esto significa que 1 cuadro pequeño (1 mm) equivale a 0.1 mV, 1 cuadro grande (5 mm) equivale a 0.5 mV, 2 cuadros grandes (10 mm) equivalen a 1.0 mV, y 4 cuadros grandes (20 mm) equivalen a 2.0 mV. De esta manera, midiendo la altura de los picos R en milímetros sobre el registro impreso, es posible determinar su amplitud en milivoltios de forma directa.
+
+\subsection{Mediciones de Amplitud de los Complejos QRS}
+
+Se consideraron 6 pulsos para analizar los complejos QRS. Para cada uno, se identificó el nivel isoeléctrico (línea base), el cual se mantiene constante a lo largo del registro. Luego se localizó el punto más alto de cada complejo QRS, correspondiente al pico de la onda R. La amplitud se determinó midiendo la distancia vertical desde la línea base hasta el pico R en milímetros y aplicando la escala de conversión: 
+
+\[
+\text{Amplitud (mV)} = \text{distancia (mm)} \times \frac{1 \, \text{mV}}{10 \, \text{mm}}
+\]
+
+Los resultados obtenidos para los seis complejos medidos se presentan en la Tabla \ref{tab:mediciones}.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Complejo} & \textbf{Cuadros} & \textbf{mm} & \textbf{mV} \\
+		\hline
+		R1 & 4.0 & 20.0 & 2.00 \\
+		\hline
+		R2 & 3.9 & 19.5 & 1.95 \\
+		\hline
+		R3 & 4.1 & 20.5 & 2.05 \\
+		\hline
+		R4 & 4.0 & 20.0 & 2.00 \\
+		\hline
+		R5 & 3.96 & 19.8 & 1.98 \\
+		\hline
+		R6 & 4.04 & 20.2 & 2.02 \\
+		\hline
+	\end{tabular}
+	\caption{Mediciones de amplitud de los complejos QRS}
+	\label{tab:mediciones}
+\end{table}
+
+\subsection{Análisis}
+
+A partir de las mediciones realizadas, se calcularon los siguientes parámetros estadísticos que permiten evaluar el comportamiento de la señal generada:
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|c|}
+		\hline
+		\textbf{Parámetro Estadístico} & \textbf{Valor} \\
+		\hline
+		Media aritmética (\( \overline{X} \)) & 2.000 mV \\
+		\hline
+		Desviación estándar (\( \sigma \)) & 0.034 mV \\
+		\hline
+		Coeficiente de variación (CV) & 1.70 \% \\
+		\hline
+		Valor máximo & 2.05 mV \\
+		\hline
+		Valor mínimo & 1.95 mV \\
+		\hline
+		Rango de variación & 0.10 mV \\
+		\hline
+	\end{tabular}
+	\caption{Parámetros estadísticos de las mediciones}
+	\label{tab:estadistica}
+\end{table}
+
+\subsection{Evaluación de Cumplimiento}
+
+Considerando que la amplitud nominal requerida es de 2.0 mV con una tolerancia de ±0.2 mV (rango aceptable entre 1.8 mV y 2.2 mV), se procede a evaluar si el prototipo cumple con la especificación:
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Criterio} & \textbf{Especificación} & \textbf{Resultado} & \textbf{Evaluación} \\
+		\hline
+		Amplitud nominal & 2.0 mV & 2.000 mV & Cumple \\
+		\hline
+		Límite inferior & 1.8 mV & 1.95 mV (mínimo) & Por encima del límite \\
+		\hline
+		Límite superior & 2.2 mV & 2.05 mV (máximo) & Por debajo del límite \\
+		\hline
+		Error absoluto & < 0.2 mV & 0.000 mV (media) & Cumple \\
+		\hline
+		Repetibilidad & < 5\% & 1.70\% & Cumple \\
+		\hline
+	\end{tabular}
+	\caption{Verificación de cumplimiento de especificaciones}
+	\label{tab:cumplimiento}
+\end{table}
+En consecuencia, se verifica que el simulador de ECG produce una señal cuya amplitud, medida desde la línea base hasta el pico R, se encuentra dentro del rango especificado de 2 mV ± 0.2 mV.
+
+\newpage
+
+\section{Anexos}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\linewidth]{media/codigo-uc-ecg}
+	\caption{Arreglo de datos pre procesados ECG}
+	\label{fig:codigo-uc-ecg}
+\end{figure}
+
+
+\begin{minted}[
+	fontsize=\footnotesize,
+	linenos,
+	frame=lines,
+	breaklines
+	]{c++}
+	
+	// Parámetros de la señal ECG
+	// Array de datos ECG (el compilador contará automáticamente)
+	
+	const int ecg_data[] = {
+		0,13,25,37,47,57,66,73,80,85, ...
+		
+	};
+	
+	// El tamaño se calcula automáticamente
+	const int ECG_VALUES = sizeof(ecg_data) / sizeof(ecg_data[0]);
+	// Pines
+	const int DAC_PIN = 25;      // GPIO25 (DAC1)
+	const int BUTTON_PIN = 26;   // GPIO26 para el pulsador (cambia si lo necesitas)
+	
+	// Variables de frecuencia
+	float current_frequency = 1.0;  // Frecuencia actual en Hz (1Hz por defecto)
+	float period_ms;                // Periodo actual en ms
+	unsigned long last_sample_time = 0;
+	unsigned long last_button_time = 0;
+	const unsigned long debounce_delay = 50;  // Delay anti-rebote
+	
+	// Variables de control
+	int sample_index = 0;
+	bool frequency_toggle = false;  // false = 1Hz, true = 2Hz
+	
+	void setup() {
+		Serial.begin(115200);
+		
+		// Configurar pines
+		pinMode(DAC_PIN, OUTPUT);
+		pinMode(BUTTON_PIN, INPUT_PULLUP);  // Pulsador con resistencia pull-up interna
+		
+		// Calcular periodo inicial
+		update_period();
+		
+		Serial.println("Generador de señal ECG iniciado");
+		Serial.println("Frecuencia inicial: 1 Hz");
+		Serial.println("Presiona el pulsador para cambiar a 2 Hz");
+		Serial.println("Presiona nuevamente para volver a 1 Hz");
+	}
+	
+	void loop() {
+		unsigned long current_time = millis();
+		
+		// Control del pulsador (toggle)
+		if (digitalRead(BUTTON_PIN) == LOW) {
+			if (current_time - last_button_time > debounce_delay) {
+				frequency_toggle = !frequency_toggle;
+				
+				if (frequency_toggle) {
+					current_frequency = 2.0;
+					Serial.println("Frecuencia cambiada a: 2 Hz");
+				} else {
+					current_frequency = 1.0;
+					Serial.println("Frecuencia cambiada a: 1 Hz");
+				}
+				
+				update_period();
+				last_button_time = current_time;
+				
+				// Pequeña pausa para evitar múltiples detecciones
+				delay(200);
+			}
+		}
+		
+		// Generación de la señal ECG
+		if (current_time - last_sample_time >= period_ms) {
+			// Obtener valor ECG actual (ajustar si hay valores negativos)
+			int ecg_value = ecg_data[sample_index];
+			
+			// Asegurar que el valor esté en el rango 0-255 para DAC de 8 bits
+			if (ecg_value < 0) {
+				ecg_value = 0;
+			} else if (ecg_value > 255) {
+				ecg_value = 255;
+			}
+			
+			// Escribir en el DAC (GPIO25)
+			dacWrite(DAC_PIN, ecg_value);
+			
+			// Actualizar índice circular
+			sample_index++;
+			if (sample_index >= ECG_VALUES) {
+				sample_index = 0;
+			}
+			
+			last_sample_time = current_time;
+		}
+	}
+	
+	void update_period() {
+		// Calcular periodo en milisegundos
+		// T = 1/f * 1000 (ms)
+		// Dividimos entre el número de muestras para obtener el tiempo por muestra
+		period_ms = (1000.0 / current_frequency) / ECG_VALUES;
+		
+		Serial.print("Periodo por muestra: ");
+		Serial.print(period_ms, 4);
+		Serial.println(" ms");
+	}
+	
+\end{minted}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{apalike}
+\bibliography{contenido/bibliog.bib}
+\end{document}
