@@ -1,0 +1,107 @@
+\UseRawInputEncoding
+\documentclass[a4paper,openany,12pt]{book}
+\input{contenido/includes.tex}
+\newcolumntype{L}{>{\centering\arraybackslash}m{4cm}} 
+\usepackage[caption=false]{subfig}
+\usepackage{dsfont}
+\usepackage{gantt}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{float}
+\usepackage{minted}
+
+\newtheorem{defn}{Definition}[section]
+\pagenumbering{Roman}
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%% list of content %%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents 
+\listoffigures 
+\addcontentsline{toc}{chapter}{Lista de Figuras}
+
+\setlength{\tabcolsep}{6pt} 
+\renewcommand{\arraystretch}{1}
+\clearpage
+\pagenumbering{arabic}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{contenido/desarrollo}
+
+\section{Principio de funcionamiento y usos de los ventiladores pulmonares, también llamados ventiladores mecánicos (guía de comparación ECRI para ventiladores mecánicos)}
+
+Los ventiladores pulmonares o ventiladores mecánicos son dispositivos médicos utilizados para proporcionar soporte ventilatorio a pacientes que no pueden respirar por sí mismos o cuya respiración es insuficiente para mantener un intercambio gaseoso adecuado. Estos equipos se emplean principalmente en unidades de cuidados intensivos, quirófanos o durante emergencias médicas. Su función principal es asistir o reemplazar temporalmente la función respiratoria, permitiendo que el oxígeno llegue a los pulmones y que el dióxido de carbono sea eliminado del organismo. Este soporte es necesario en situaciones como enfermedades pulmonares graves, traumatismos, cirugías bajo anestesia general, insuficiencia respiratoria o cuando los músculos respiratorios se encuentran debilitados y una figura referencia sobre su estructura se muestra en \ref{fig:ventilador-pulmonar}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{media/ventilador-pulmonar.png}
+    \caption{Ventilador Pulmonar - Ventilador mecanico}
+    \label{fig:ventilador-pulmonar}
+\end{figure}
+
+El principio de funcionamiento de los ventiladores mecánicos se basa principalmente en la ventilación por presión positiva que a diferencia de la respiración fisiológica natural, en la cual el aire entra a los pulmones por una presión negativa generada por la expansión del tórax, el ventilador introduce una mezcla de gases (aire y oxígeno) hacia los pulmones mediante presión positiva la cual es impulsada a través de un circuito respiratorio conectado al paciente generalmente mediante un tubo endotraqueal o una traqueostomía y durante la fase de inspiración, el ventilador aumenta la presión dentro del sistema respiratorio para inflar los pulmones; posteriormente, durante la espiración, el gas es liberado a través de una válvula de exhalación, permitiendo que el aire salga de los pulmones y se restablezca el ciclo respiratorio. 
+
+\subsection{Estructura y partes}
+
+El ventilador de forma integral cuenta con diferentes partes para su funcionamiento, esto integra su estructura (partes física) y la parte correspondiente al monitoreo mediante software, las cuales son:
+
+\begin{enumerate}
+    \item Fuente de suministro de gases
+    \item Sistema de control
+    \item Circuito respiratorio o circuito de ventilación
+    \item Válvula de exhalación
+    \item Sensores y sistema de medición
+    \item Sistema de monitoreo
+    \item Sistema de alarmas
+    \item Sistema de alimentación eléctrica y batería
+\end{enumerate}
+
+Desde el punto de vista estructural, un ventilador mecánico está compuesto por varios subsistemas fundamentales, encontrando entre ellos el suministro de gases, el sistema de control, el circuito respiratorio, y los sistemas de monitoreo y alarmas. El suministro de gases generalmente proviene de una fuente hospitalaria de aire comprimido y oxígeno. El sistema de control, que en muchos equipos modernos es gobernado por microprocesadores, regula parámetros como el volumen de aire administrado, la presión aplicada, la frecuencia respiratoria y la fracción de oxígeno inspirado . El circuito respiratorio conecta el ventilador con el paciente mediante tuberías flexibles que transportan el gas inspirado y conducen el gas exhalado de regreso al ventilador. Finalmente, los sistemas de monitoreo y alarmas supervisan variables respiratorias como presión, volumen tidal y frecuencia respiratoria para garantizar la seguridad del paciente. 
+
+Los ventiladores mecánicos pueden operar en diferentes modos de ventilación, dependiendo de las necesidades clínicas del paciente. Algunos modos proporcionan ventilación completamente controlada cuando el paciente no puede respirar por sí mismo, mientras que otros permiten que el paciente inicie respiraciones espontáneas con asistencia parcial del ventilador. Entre los modos más comunes se encuentran el controlado, el asistido/controlado, la ventilación mandatoria intermitente sincronizada (SIMV) y el soporte de presión. Estos modos permiten adaptar el funcionamiento del ventilador a la condición fisiológica del paciente, reduciendo el esfuerzo respiratorio y facilitando la recuperación progresiva de la función pulmonar.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{media/monitor}
+	\caption{Monitor del ventilador mecanico - Drager Babylog 8000+}
+	\label{fig:monitor}
+\end{figure}
+
+
+En cuanto a sus usos clínicos, los ventiladores pulmonares se emplean en una amplia variedad de situaciones médicas. Son esenciales en el tratamiento de pacientes con insuficiencia respiratoria aguda o crónica, síndrome de dificultad respiratoria, enfermedades pulmonares obstructivas, traumatismos torácicos o neuromusculares que afectan la respiración \cite{ecri2006ventilators}. También se utilizan durante procedimientos quirúrgicos en los que el paciente está bajo anestesia general, ya que en estas condiciones la respiración espontánea puede estar suprimida. Además, pueden utilizarse de forma temporal para permitir que los músculos respiratorios descansen mientras el organismo se recupera de una enfermedad o lesión. 
+
+\section{Características del ventilador Drager Babylog 8000+}
+
+\subsection*{1. Amplia variedad de modos de ventilación neonatal}
+El ventilador Babylog 8000+ permite utilizar múltiples modos de ventilación adaptados a las necesidades clínicas de neonatos y bebés prematuros. Entre los principales modos se encuentran la ventilación mandatoria intermitente (IMV), ventilación sincronizada (SIPPV), ventilación con presión de soporte (PSV), presión positiva continua en las vías aéreas (CPAP) y ventilación con garantía de volumen (VG). Esta diversidad de modos permite ajustar la terapia respiratoria según la condición del paciente, facilitando tanto la ventilación controlada como la asistencia a la respiración espontánea.
+
+\subsection*{2. Ventilación de alta frecuencia integrada}
+Una característica importante del ventilador es la capacidad de realizar ventilación de alta frecuencia (HFV), la cual puede combinarse con modos como CPAP o IMV para mejorar el intercambio gaseoso en pacientes críticos. Este tipo de ventilación trabaja con frecuencias que pueden variar aproximadamente entre 5 y 20 Hz, permitiendo administrar volúmenes muy pequeños a alta velocidad, lo que ayuda a reducir el riesgo de daño pulmonar en neonatos con pulmones inmaduros o frágiles.
+
+\subsection*{3. Sistema avanzado de monitorización respiratoria}
+El equipo incorpora sistemas integrados de monitorización que permiten medir en tiempo real parámetros respiratorios importantes como flujo, volumen tidal, presión de las vías aéreas y concentración de oxígeno inspirado (FiO$_2$). Los sensores se encuentran generalmente ubicados en la pieza en Y del circuito respiratorio, lo que permite obtener mediciones precisas del estado respiratorio del paciente. Además, el ventilador puede mostrar curvas de presión y flujo en tiempo real para facilitar la evaluación clínica.
+
+\subsection*{4. Control preciso de parámetros ventilatorios}
+El Babylog 8000+ permite ajustar con gran precisión diferentes parámetros de ventilación mediante su panel de control \ref{fig:panel-control}. Entre estos se incluyen la concentración de oxígeno inspiratorio (21–100 \%), la presión inspiratoria pico (10–80 mbar), la presión positiva al final de la espiración PEEP/CPAP (0–25 mbar), el tiempo inspiratorio (0,1–2 s) y el flujo inspiratorio (1–30 L/min). Estos rangos de ajuste permiten adaptar el soporte ventilatorio a diferentes condiciones fisiológicas de los pacientes neonatales.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/panel-control}
+	\caption{Panel de control ventilador Drager Babylog 8000+}
+	\label{fig:panel-control}
+\end{figure}
+
+\subsection*{5. Sistema de alarmas y registro de eventos}
+
+El ventilador incorpora mecanismos de seguridad que incluyen alarmas para detectar condiciones anormales como desconexiones del circuito, cambios en la presión de las vías respiratorias o fallos técnicos del sistema. Además, el equipo puede almacenar registros de alarmas y eventos operativos (por ejemplo, las últimas 100 alarmas), lo que facilita la supervisión clínica, el seguimiento del tratamiento y la revisión del funcionamiento del ventilador durante la atención médica.
+
+Además de brindar la facilidad de exportar los datos para su posterior análisis en el formato .rtd, .txt o .csv esto mediante su puerto USB vinculado al sistema operativo Windows XP.
+
+
+
+
+\bibliographystyle{apalike}
+\bibliography{contenido/bibliog.bib}
+\end{document}
