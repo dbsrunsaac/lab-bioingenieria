@@ -7,14 +7,14 @@ Para el análisis de datos con el fotocolorimetro Neulog se consideraron las mue
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/abs-lineal}
-	\caption{Regresión lineal - Absorbancia vs concentración}
+	\caption{Regresión lineal - Absorbancia vs concentración - Azul}
 	\label{fig:abs-lineal}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/abs-polinomica}
-	\caption{Regresión polinómica - Absorbancia vs concentración}
+	\caption{Regresión polinómica - Absorbancia vs concentración - Azul}
 	\label{fig:abs-polinomica}
 \end{figure}
 
@@ -23,7 +23,7 @@ Como se describen en las figuras \ref{fig:abs-lineal} y \ref{fig:abs-polinomica}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/abs-pol-verde}
-	\caption{}
+	\caption{Regresión polinómica - Absorbancia vs concentración - Verde}
 	\label{fig:abs-pol-verde}
 \end{figure}
 
@@ -37,32 +37,61 @@ Para el problema inverso se obtuvo la inversa de cada función la cuya de forma 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/conc-lineal-azul}
-	\caption{}
+	\caption{Regresión lineal - Concentración vs absorbancia - Azul}
 	\label{fig:conc-lineal-azul}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/conc-pol-azul}
-	\caption{}
+	\caption{Regresión polinómica - Concentración vs absorbancia - Azul}
 	\label{fig:conc-pol-azul}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/conc-lineal-verde}
-	\caption{}
+	\caption{Regresión lineal - Concentración vs absorbancia - Verde}
 	\label{fig:conc-lineal-verde}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{media/conc-pol-verde}
-	\caption{}
+	\caption{Regresión polinómica - Concentración vs absorbancia - Verde}
 	\label{fig:conc-pol-verde}
 \end{figure}
 
+Y tal como se pueden apreciar en cada imagen se describen las ecuaciones lineales, polinómicas en conjunto con sus coeficientes determinación $R^2$ y que a partir de las mismas al usar las ecuaciones de segundo orden por su mayor grado de adaptación a los datos se pueden validar valores de concentración en función a la absorbancia, siendo así que en la tabla \ref{tab:conc-absorbancia} se muestran los valores de concentración para las muestras de color azul en función a la absorbancia.
 
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Absorbancia} & \textbf{Concentración} \\ \hline
+		0.7                  & 0.119459               \\ \hline
+		1.3                  & 0.237779               \\ \hline
+		1.9                  & 0.535451               \\ \hline
+		2                    & 0.6025                 \\ \hline
+		2.3                  & 0.833539               \\ \hline
+	\end{tabular}
+	\caption{Concentraciones estimadas a partir de la absorbancia - Azul}
+	\label{tab:conc-absorbancia}
+\end{table}
+
+Y las cuales brindan una aproximación para la cantidad de concentración bajo la ecuación polinómica de regresión \ref{eq:regresion-pol-conc-abs}
+
+\begin{equation}
+	c(x) = 0.2491x^2 - 0.301x + 0.2081
+	\label{eq:regresion-pol-conc-abs}
+\end{equation}
+
+\section{Para el ejercicio de laboratorio en que uno de los integrantes del grupo preparó una solución de concentración desconocida para el otro, cuál fue la absorbancia y la concentración calculadas?	Cuál fue el error absoluto y relativo respecto de la concentración de la solución preparada?}
+
+Para el ejercicio propuesto se considero la preparación de una muestra de color azul la cual fue medida con el fotocolorimetro Neulog para la obtención de la absorbancia y luego en función a tal valor en función a la ecuación obtenida en la regresión se calculo la concentración de la muestra.
+
+Para la muestra se obtuvo una absorbancia de 1.2 obteniendo para tal valor una concentración de 0.2056 o 20.56\% y cuyo valor de mezcla porcentual fue de 20\%, obteniendo así un error absoluto de $E_a = 0.56 $\% y un error relativo $E_r = 0.2081$, cuyos valores poco significativos validan la ecuación de regresión obtenida.
 
 
 

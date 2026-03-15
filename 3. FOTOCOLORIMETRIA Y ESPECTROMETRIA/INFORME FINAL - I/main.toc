@@ -5,4 +5,5 @@
 \contentsline {chapter}{Lista de Figuras}{IV}{chapter*.4}%
 \contentsline {chapter}{\numberline {1}Desarrollo}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Utilizando Excel, para los datos de la pregunta 5, encuentre una regresión lineal y una cuadrática a los datos y los respectivos coeficiente de determinación (R2). ¿Cuál es mejor?}{1}{section.1.1}%
-\contentsline {chapter}{Bibliograf\'{\i }a}{3}{chapter*.7}%
+\contentsline {section}{\numberline {1.2}Para el problema inverso dada una absorbancia, calcular la concentración respectivas (\%), vuelva a aplicar el ajuste de curvas pero como variable independiente tendrá absorbancia y como variable dependiente la concentración. Escriba las funciones lineal y cuadrática respectiva.}{3}{section.1.2}%
+\contentsline {chapter}{Bibliograf\'{\i }a}{6}{chapter*.12}%
