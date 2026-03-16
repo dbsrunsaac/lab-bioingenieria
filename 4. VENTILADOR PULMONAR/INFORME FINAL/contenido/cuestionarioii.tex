@@ -20,3 +20,138 @@ En forma de lista los pasos a seguir se detallan:
 \end{enumerate}
 
 
+\section{Sincronizar la información de los dos archivos proporcionados para obtener volumen y flujo y verificar que la señal de presión está corrompida en el archivo *.csv}
+
+Después de la demostración en las que se analiza las capacidades del ventilador mecánico mediante el ajuste de sus parámetros como el $T_i$ (Tiempo de inspiración), $T_e$ (Tiempo de espiración), el flujo y presión se procedió con la obtención de los archivos de registro (datos) mediante los formatos .rtd y .txt en los cuales se capturaron los datos para:
+
+\begin{enumerate}
+	\item Presión
+	\item Flujo
+	\item Volumen
+\end{enumerate}
+
+Obteniendo para cada parámetro una frecuencia de muestreo $f_s = 61 Hz$ o 61 datos por segundo según la escala de tiempo obtenida en MATLAB para su visualización mediante el entorno figure.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\linewidth]{media/datos-p-f-v}
+	\caption{Datos Presión, Flujo y Volumen}
+	\label{fig:datos-p-f-v}
+\end{figure}
+
+En la figura \ref{fig:datos-p-f-v} se puede observar la extracción del conjunto de datos para cada parámetro luego de un procesamiento en el cual se filtraron los valores nulos o NaN debido a la existencia de etiquetas de texto para cada segundo del registro de datos.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/presion-salida}
+	\caption{Curva de precisión}
+	\label{fig:presion-salida}
+\end{figure}
+
+
+Finalmente para cada parámetro y en especifico para la presión \ref{fig:presion-salida} se denota un cambio en la escala de la señal en comparación a la vista en el monitor del ventilador mecánico, con un pico en los 600 mbar, sin embargo esto no denota ilegibilidad en los datos de tal parámetro por lo que este no encuentra corrupto.
+
+\section{Presentar los métodos de procesamiento de datos y los resultados obtenidos para recuperar la información de la señal de presión del archivo *.csv a partir del archivo *.rtd correspondiente}
+
+Los datos extraídos del equipo respiratorio se almacenaron principalmente en 2 archivos principales, uno en formato de texto (.txt) y el otro en el formato .rtd el cual es un tipo de archivo de almacenamiento de información cuya codificación depende del software que registra la información.
+
+\subsection{Lectura de datos}
+
+Para la experiencia ambos archivos contemplan la misma información registrada, sin embargo debido a su formato cada uno tiene una lectura y procesamiento diferente, en este caso por la facilidad del procedimiento de opto por convertir el archivo .txt a un archivo .csv para su lectura en MATLAB, mediante la web \cite{groupdocs_txt_to_csv_converter} en la cual se sube el archivo el archivo .txt arrastrandolo al panel de archivos y finalmente presionando el botón de conversión para realizar la descargar en el nuevo formato \ref{fig:convert-txt-csv}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/convert-txt-csv}
+	\caption{Interfaz web para convertir txt a csv}
+	\label{fig:convert-txt-csv}
+\end{figure}
+
+La ventaja de esta conversión es la facilidad de procesar los datos al estar separados por comas y que MATLAB cuenta con funciones integradas que facilitan la lectura mediante la definición de la ruta del archivo, sin embargo el archivo convertido cuenta con metadatos adicionales que tienen que ser filtrados puesto que no son relevantes para la obtención de las gráficas de cada parámetro.
+
+\subsection{Pre procesamiento}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\linewidth]{media/proc-datos}
+	\caption{Metadatos archivo de datos - Ventilador Mecánico}
+	\label{fig:proc-datos}
+\end{figure}
+
+En la figura \ref{fig:proc-datos} se muestra un ejemplo de los datos en crudo al realizar una lectura inicial que fue procesada mediante la eliminación de la primera y ultima columna y el uso de la función de MATLAB \textit{rmmissing} para eliminar todas aquellas filas que al menos tenga un valor NaN (Non a Number) en su composición, luego de este procedimiento el resultado se aprecia en \ref{fig:datos-p-f-v} y con los cuales se realizaron el ploteo para el análisis de datos.
+
+\subsection{Re escalado de los datos}
+
+Como se mostró en la figura \ref{fig:presion-salida} cada parámetro durante el registro se vio modificado por una nueva escala de valores y agregando además un offset o valor DC en cada muestra, por lo tanto un primer paso para eliminar estas modificaciones fue calcular el valor medio de cada parámetro y analizar si mediante la resta se tendría esta eliminación del offset, sin embargo esto solo ocurrio para los datos del flujo, siendo necesario analizar gráficamente la presión y el volumen en comparación a su valores vistos en el laboratorio \ref{fig:escalas-ventilador-pul} que se tomaron como referencia para realizar el nuevo escalamiento. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/escalas-ventilador-pul}
+	\caption{Escalas min y max del ventilador pulmonar de presión, flujo y volumen}
+	\label{fig:escalas-ventilador-pul}
+\end{figure}
+
+Siendo así que:
+
+\begin{itemize}
+	\item Presión el pico mínimo es de 0 y el máximo de aprox. 15
+	\item Flujo el mínimo de -3 y el máximo de 2
+	\item Volumen un mínimo de 0 y un máximo de aprox. 7
+\end{itemize}
+
+Con estas consideraciones a la presión se resto el valor de 320 para que inicie en cero y se dividio a ese resultado entre 18.6 para ajustar la escala a 15 y lo propio con el resto de parámetros, obteniendo así un correcto escalado mostrado en \ref{fig:presion-esc}, \ref{fig:flujo-esc} y \ref{fig:volumen-esc}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/presion-esc}
+	\caption{Presión escalada - Ventilador mecánico}
+	\label{fig:presion-esc}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/flujo-esc}
+	\caption{Flujo escalado - Ventilador mecánico}
+	\label{fig:flujo-esc}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/volumen-esc}
+	\caption{Volumen escalado - Ventilador mecánico}
+	\label{fig:volumen-esc}
+\end{figure}
+
+
+\section{En base a los datos obtenidos, hacer un modelamiento básico para calcular la compliancia o pendiente de la relación volumen-presión del pulmón de prueba que su grupo ha utilizado (pulmón de prueba del rango de volumen neonatal) o el pulmón de prueba (Linear test lung) de rango de volúmen adulto-pediátrico}
+
+Para el calculo de la compliancia en función al volumen - presión al ser este valor la pendiente de la relación que vincula al volumen en función de la presión se opto por definir la derivada del volumen respecto a la presión como modelo básico para la obtención de este valor.
+
+\begin{equation}
+	c(p) = \frac{dv(p)}{dp}
+	\label{eq:compliancia}
+\end{equation}
+
+En la ecuación \ref{eq:compliancia} se define el modelo matemático para el calculo de la compliancia donde:
+
+\begin{itemize}
+	\item c(p) : Compliancia en función de la presión
+	\item v(p) : Volumen en función de la presión
+\end{itemize}
+
+Además se debe enfatizar que las unidades de este parámetro se encuentra en $C = \frac{mL}{cmH_2O}$ como se muestra en la figura \ref{fig:parametros-ventilador}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/parametros-ventilador}
+	\caption{Parámetros ventilador mecánico}
+	\label{fig:parametros-ventilador}
+\end{figure}
+
+Finalmente la función de volumen vs presión se muestra en la figura \ref{fig:compliancia} y mediante la cual se pueden obtener los valores de compliancia de ser necesario (esta gráfica es el resultado de un periodo de respiración correspondiente a 2 segundos de ploteo a partir de los datos obtenidos).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/compliancia}
+	\caption{Curva volumen vs presión}
+	\label{fig:compliancia}
+\end{figure}

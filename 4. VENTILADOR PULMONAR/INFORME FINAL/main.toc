@@ -1,0 +1,16 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\'{I}ndice de cuadros}{IV}{chapter*.3}%
+\contentsline {chapter}{Lista de Tablas}{IV}{chapter*.3}%
+\contentsline {chapter}{\'{I}ndice de figuras}{V}{chapter*.4}%
+\contentsline {chapter}{Lista de Figuras}{V}{chapter*.4}%
+\contentsline {chapter}{\numberline {1}Cuestionario I}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}El flujo exhalatorio depende del ventilador o de las características de los pulmones del paciente?}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Cuestionario II}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Describir los procedimientos para configurar el ventilador pulmonar y hacer el registro de datos en una memoria USB}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Sincronizar la información de los dos archivos proporcionados para obtener volumen y flujo y verificar que la señal de presión está corrompida en el archivo *.csv}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Presentar los métodos de procesamiento de datos y los resultados obtenidos para recuperar la información de la señal de presión del archivo *.csv a partir del archivo *.rtd correspondiente}{5}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Lectura de datos}{5}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Pre procesamiento}{6}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Re escalado de los datos}{7}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}En base a los datos obtenidos, hacer un modelamiento básico para calcular la compliancia o pendiente de la relación volumen-presión del pulmón de prueba que su grupo ha utilizado (pulmón de prueba del rango de volumen neonatal) o el pulmón de prueba (Linear test lung) de rango de volúmen adulto-pediátrico}{8}{section.2.4}%
+\contentsline {chapter}{Bibliograf\'{\i }a}{11}{chapter*.16}%
