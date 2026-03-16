@@ -1,5 +1,246 @@
 \chapter{Desarrollo}
 
+\section{Según el sensor optoelectrónico que haya utilizado deberá haber medido una corriente (para el
+caso de los fotodiodos y fototransistores) o una resistencia luego de que la luz del respectivo LED
+atravesara la cubeta de 1 cm de espesor:En caso haya utilizado resistencias dependientes de la luz (LDR), halle las resistencias para las
+mismas corrientes en los diodos emisores.}
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ILED_Rojo (mA) & \( R_{LDR} \) (Ohm) \\
+\hline
+5 mA    & 655.5 \\
+\hline
+0.5 mA  & 3,274.3 \\
+\hline
+0.05 mA & 34,837.0 \\
+\hline
+\end{tabular}
+\caption{Valores de resistencia del LDR para LED Rojo}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ILED Verde (mA) & \( R_{LDR} \) (Ohm) \\
+\hline
+5 mA    & 1,348.0 \\
+\hline
+0.5 mA  & 6,984.0 \\
+\hline
+0.05 mA & 111,771.2 \\
+\hline
+\end{tabular}
+\caption{Valores de resistencia del LDR para LED Verde}
+\end{table}
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ILED Azul (mA) & \( R_{LDR} \) (Ohm) \\
+\hline
+5 mA    & 1,285.9 \\
+\hline
+0.5 mA  & 6,616.3 \\
+\hline
+0.05 mA & 40,458.7 \\
+\hline
+\end{tabular}
+\caption{Valores de resistencia del LDR para LED Azul}
+\label{tab:resistencia-ldr}
+\end{table}
+
+\section{Según el sensor que haya utilizado, para cada color de la luz emitida por el led RGB, explique la relación entre la luz y resistencia en caso de un LDR}
+
+Según el sensor LDR, para cada color del LED RGB se obtuvo la curva de resistencia en función de la corriente del LED. Los puntos experimentales corresponden a \SI{0,05}{\milli\ampere}, \SI{0,5}{\milli\ampere} y \SI{5}{\milli\ampere}. Para cada caso se ajustó un modelo de ley que establece una relación directa entre la cantidad de luz y la resistencia medida (calculada) a partir del voltaje de salida medido por el divisor de tensión.
+
+\section{Si usted utiliza en cambio un sensor LDR, implemente un circuito de acondicionamiento de señal que puede ser un divisor de tensión simple de modo que, para la máxima corriente del emisor de
+luz, usted obtenga un voltaje lo más cercano al mínimo del rango de entrada de su convertidor A/D y de forma contraria, un voltaje lo más cercano al máximo del rango de entrada de su convertidor A/D. De esta manera usted deberá obtener una lectura de voltaje que tenga una relación directa con la absorbancia (a menor absorbancia menor voltaje y viceversa, mayor absorbancia mayor voltaje).}
+
+Para realizar la medición de absorbancia empleando un sensor LDR \cite{ldr_sensor} se diseñó un circuito de acondicionamiento de señal basado en un divisor de tensión. El propósito de este arreglo es transformar las variaciones de resistencia del LDR,
+originadas por los cambios en la intensidad luminosa incidente, en una señal de
+voltaje que pueda ser correctamente interpretada por el convertidor
+analógico–digital (ADC) del Arduino, cuyo rango de entrada es de 0 a 5 V.
+
+El principio de funcionamiento se basa en que la resistencia del LDR disminuye
+cuando recibe mayor cantidad de luz y aumenta cuando la iluminación se reduce.
+En el experimento, la intensidad luminosa depende de la corriente aplicada al
+LED emisor y de la cantidad de luz absorbida por la solución analizada. Por lo
+tanto, variaciones en la absorbancia producen cambios en la iluminación que
+llega al sensor y, en consecuencia, modificaciones en su resistencia.
+
+Para adaptar estas variaciones al rango del ADC se empleó un divisor de tensión
+compuesto por una resistencia fija de $R = 11.8\,\text{k}\Omega$ y el LDR,
+alimentado con un voltaje de $V_{in} = 12\,\text{V}$. El voltaje presente en la
+entrada del ADC se determina mediante la relación:
+
+\[
+V_{ADC} = \frac{R_{LDR}}{R_{LDR}+R}\,V_{in}
+\]
+
+En la condición de menor absorbancia, la solución permite el paso de una mayor
+cantidad de luz hacia el sensor. Bajo estas condiciones la resistencia del LDR
+disminuye considerablemente. Para el valor mínimo medido
+$R_{LDR} = 422\,\Omega$, el voltaje obtenido es:
+
+\[
+V_{ADC} = \frac{422}{422 + 11800}\times 12 = 0.414\,\text{V}
+\]
+
+Este valor corresponde a un nivel cercano al límite inferior del rango del ADC.
+
+Por el contrario, cuando la absorbancia de la solución aumenta, la cantidad de
+luz que alcanza al sensor disminuye, lo que provoca un incremento en la
+resistencia del LDR. Para el valor máximo registrado
+$R_{LDR} = 7600\,\Omega$, el voltaje calculado es:
+
+\[
+V_{ADC} = \frac{7600}{7600 + 11800}\times 12 = 4.701\,\text{V}
+\]
+
+Este resultado se encuentra próximo al límite superior del rango de medición
+del ADC, pero sin llegar a saturarlo.
+
+De esta manera, el divisor de tensión permite convertir las variaciones de
+resistencia del LDR en un rango de voltajes adecuado para el ADC del Arduino.
+Además, se establece una relación directa entre el voltaje medido y la
+absorbancia de la solución: valores bajos de absorbancia producen voltajes
+pequeños, mientras que al incrementarse la absorbancia el voltaje obtenido en
+la salida del divisor aumenta, lo que facilita la diferenciación entre distintos
+niveles de absorción luminosa.
+
+\section{Idealmente, su fotocolorímetro, para cada color debería entregar una absorbancia de 1 cuando
+la corriente del emisor de luz sea 0.5 mA (log10(5 mA/0.5mA)) y una absorbancia de 2 cuando la
+corriente del emisor de luz sea 0.05mA (log10(5 mA/0.05mA)). ¿Qué curva o función matemática
+tiene el mejor coeficiente de determinación? La absorbancia debe ser la variable dependiente y el
+voltaje de entrada al convertidor la variable independiente.}
+
+
+Idealmente, el fotocolorímetro debe entregar una absorbancia de
+$A = 1$ cuando la corriente del LED emisor sea $0.5\,\text{mA}$ y una
+absorbancia de $A = 2$ cuando la corriente sea $0.05\,\text{mA}$.
+Esto se obtiene a partir de la definición de absorbancia:
+
+\[
+A=\log_{10}\left(\frac{I_0}{I}\right)
+\]
+
+donde $I_0 = 5\,\text{mA}$ corresponde a la corriente de referencia del
+emisor de luz. De esta forma:
+
+\[
+A(0.5\,\text{mA})=\log_{10}\left(\frac{5}{0.5}\right)=\log_{10}(10)=1
+\]
+
+\[
+A(0.05\,\text{mA})=\log_{10}\left(\frac{5}{0.05}\right)=\log_{10}(100)=2
+\]
+
+Para evaluar el comportamiento del prototipo se realizaron mediciones
+experimentales registrando el voltaje de salida del circuito
+acondicionador conectado al ADC del microcontrolador.
+A partir de estos datos se construyeron curvas de calibración donde
+la absorbancia $A$ se consideró como variable dependiente y el voltaje
+de entrada al ADC $V$ como variable independiente.
+
+El análisis de los datos experimentales mostró que la relación entre
+la absorbancia y el voltaje puede aproximarse adecuadamente mediante
+un modelo lineal de la forma:
+
+\[
+A = mV + b
+\]
+
+Este resultado es consistente con el comportamiento esperado del
+fotocolorímetro, ya que el divisor de tensión con el LDR genera una
+variación de voltaje aproximadamente proporcional a los cambios de
+intensidad luminosa detectados por el sensor.
+
+Para cada color se obtuvo una curva de calibración diferente debido a
+las distintas respuestas espectrales del sistema óptico y del sensor.
+Entre los modelos evaluados, el ajuste lineal presentó el mayor
+coeficiente de determinación $R^2$, lo que indica que describe de forma
+adecuada la relación entre la absorbancia y el voltaje medido en el
+prototipo.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{azuledgreen.png}
+    \caption{Absorbancia vs Voltaje de color azul con luz verde}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{verdeledred.png}
+    \caption{Absorbancia vs Voltaje de color verde con luz rojo}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{ledazul.png}
+    \caption{Absorbancia vs Voltaje de color amarillo con luz azul}
+    \label{fig:placeholder}
+\end{figure}
+\section{Presente y el diagrama esquemático de todo el circuito (etapas analógica y digital) basado en un
+microcontrolador o el sistema de desarrollo que haya elegido. Justifique los valores de los
+componentes más relevantes del sistema.}
+
+En el sistema implementado se diseñó un circuito compuesto por una etapa
+analógica y una etapa digital. La etapa analógica está encargada de
+transformar las variaciones de iluminación detectadas por el sensor en una
+señal eléctrica medible, mientras que la etapa digital, basada en un
+microcontrolador Arduino \cite{arduino_adc}, se utiliza para adquirir y procesar la señal
+mediante su convertidor analógico–digital (ADC).
+
+Dentro de la etapa analógica, uno de los elementos principales es el sensor
+LDR, el cual presenta una resistencia que varía de acuerdo con la intensidad
+de luz que incide sobre él. Para convertir estos cambios de resistencia en
+una señal de voltaje adecuada para el ADC, se implementó un divisor de
+tensión formado por el LDR y una resistencia fija. El valor de esta
+resistencia fue determinado previamente, seleccionándose
+$R_5 = 11.8\,\text{k}\Omega$. Este valor permite que el voltaje obtenido en la
+entrada del ADC se encuentre dentro de su rango de operación (0–5 V) y que
+exista una relación coherente entre el voltaje medido y la absorbancia de la
+solución: cuando la absorbancia es baja, la cantidad de luz que llega al LDR
+es mayor y el voltaje medido es pequeño; en cambio, cuando la absorbancia
+aumenta, la iluminación sobre el sensor disminuye y el voltaje registrado en
+el ADC se incrementa.
+
+Por otra parte, el sistema utiliza un LED RGB \cite{rgb_led_specs} como fuente de iluminación para realizar las mediciones espectrales. Cada uno de sus canales (rojo,
+verde y azul) se conecta a pines independientes del Arduino, lo que permite
+controlar cada color de forma individual. Con el objetivo de evitar que la
+corriente que circula por los LEDs exceda los valores seguros de operación,
+se colocaron resistencias limitadoras en serie con cada canal.
+
+El valor de estas resistencias se calculó considerando una corriente de
+operación aproximada de $I = 5\,\text{mA}$ y el voltaje directo característico
+($V_f$) de cada LED. La expresión utilizada para estimar la resistencia fue:
+
+\[
+R_{LED} = \frac{V_{CC} - V_f}{I}
+\]
+
+donde $V_{CC} = 5\,\text{V}$ corresponde al voltaje de alimentación del
+Arduino. A partir de este cálculo se determinaron resistencias aproximadas de
+$R_R = 564\,\Omega$ para el canal rojo, $R_G = 464\,\Omega$ para el canal
+verde y $R_B = 416\,\Omega$ para el canal azul. Estos valores permiten que la
+corriente que atraviesa cada LED se mantenga cercana a los $5\,\text{mA}$,
+garantizando un funcionamiento seguro y una iluminación adecuada para las
+mediciones experimentales.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{cto.png}
+    \caption{Diagrama esquemático}
+    \label{fig:placeholder}
+\end{figure}
+
+%
+% PREGUNTAS 7 Y 8 
+%
+
 \section{Evalúe la exactitud de su fotocolorímetro con muestras reales coloreadas (colorante diluido) al menos para 4 absorbancias: 0, 0.5, 1 y 1.5.Cuyo valor de referencia sea el medido con un colorímetro Neulog para el mismo color.}
 
 Para la elaboración del fotocolorimetro se tuvieron en cuenta varios aspectos previos al diseño circuito en función al microcontrolador ubicando como parte fundamental de su desarrollo la estructura para lo cual se hizo un modelado en 3D adaptando los circuitos de forma precisa en cada caso, seguidamente en función a los niveles de corriente para cada color en el microcontrolador se vario la intensidad del voltaje de salida en sus pines PWM y finalmente se adapto la lectura de la absorbancia mediante el pin analógico mediante un divisor de tensión con un LDR.
